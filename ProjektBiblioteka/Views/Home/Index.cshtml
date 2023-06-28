@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Strona startowa";
+}
+
+<div class="text-center">
+    <h1 class="display-4 mb-5">Biblioteka online</h1>
+    <p>Wypożycz książkę z listy!</p>
+    <div class="d-flex justify-contnet-center align-items-center flex-column gap-3">
+        <a class="btn btn-outline-secondary p-3" asp-controller="Borrow" asp-action="AddBorrow">Wypożycz książkę</a>
+        <div class="d-flex gap-3">
+            <a class="btn btn-outline-secondary p-3" asp-controller="Books" asp-action="Index">Dodaj nowe książki</a>
+            <a class="btn btn-outline-secondary p-3" asp-controller="People" asp-action="Index">Dodaj nowe osoby</a>
+        </div>
+    </div>
+</div>

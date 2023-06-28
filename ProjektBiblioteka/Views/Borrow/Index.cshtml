@@ -1,0 +1,79 @@
+﻿@model ProjektBiblioteka.Models.Borrow.BorrowViewModel
+@{
+    ViewData["Title"] = "Lista wypożyczeń";
+}
+
+@if (Model.BorrowList.Any())
+{
+    <div class="text-center m-3 text-center">
+        <h1 class="display-3">Lista wypożyczeń</h1>
+        <a class="btn btn-primary p-3" asp-controller="Borrow" asp-action="AddBorrow"><i class="fa-solid fa-pen-to-square me-1"></i>Dodaj nowe wypożyczenie</a>
+    </div>
+    <table class="table table-hover">
+        <thead class="text-center">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Tytuł filmu</th>
+                <th scope="col">Osoba</th>
+                <th scope="col">Data wypożyczenia</th>
+                <th scope="col">Data zwrotu</th>
+                <th scope="col">Czy zwrócono?</th>
+                <th scope="col">Zwrot</th>
+                <th scope="col">Akcje</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @foreach (var item in Model.BorrowList)
+            {
+                <tr>
+                    <th>@item.Id</th>
+                    <th>@item.Book.Title</th>
+                    <th>@item.Person.FirstName @item.Person.LastName</th>
+                    <th>@item.BorrowDate.ToShortDateString()</th>
+                    <th>@item.ReturnDate.ToShortDateString()</th>
+                    <th>
+                        @if(item.IsReturned == true)
+                        {
+                            <p class="text-success"><i class="fa-solid fa-check me-2"></i>Tak</p>
+                        }
+                        else
+                        {
+                            <p class="text-danger"><i class="fa-solid fa-xmark me-2"></i>Nie</p>
+                        }
+                    </th>
+                    <th>
+                        @if (item.IsReturned == true)
+                        {
+                            <a class="btn btn-outline-danger float-right" asp-route-id="@item.Id" asp-route-isreturned="@item.IsReturned" asp-controller="Borrow" asp-action="ChangeReturnState"><i class="fa-solid fa-xmark"></i></a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-success float-right" asp-route-id="@item.Id" asp-route-isreturned="@item.IsReturned" asp-controller="Borrow" asp-action="ChangeReturnState"><i class="fa-solid fa-check"></i></a>
+                        }
+                    </th>
+                    <th>
+                        <div class="d-flex gap-1 justify-content-center">
+                            <form class=" float-left" method="post" asp-action="DeleteBorrow" asp-route-id="@item.Id">
+                                <button type="submit" class="btn btn-danger"><i class="fa-solid fa-trash me-2"></i>Usuń</button>
+                            </form>
+                            <a class="btn btn-warning float-right" asp-controller="Borrow" asp-action="EditBorrow"
+                               asp-route-id="@item.Id"
+                               asp-route-bookid="@item.BookId"
+                               asp-route-personid="@item.PersonId"
+                               asp-route-borrowdate="@item.BorrowDate">
+                                <i class="fa-solid fa-pen me-2"></i>Edytuj
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-center">
+        <p class="display-4">Dodaj nowe wypożyczenie</p>
+        <a class="btn btn-primary" asp-controller="Borrow" asp-action="AddBorrow"><i class="fa-solid fa-pen-to-square me-1"></i>Dodaj nowe wypożyczenie</a>
+    </div>
+}
